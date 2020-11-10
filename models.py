@@ -5,11 +5,11 @@ class ConvNet(nn.Module):
 
     def __init__(self, nc, nclass):
         super(ConvNet, self).__init__()
-        ks = [3, 3, 3, 3, 3, 3, 3]
-        ps = [1, 1, 1, 1, 1, 1, 0]
-        ss = [1, 1, 1, 1, 1, 1, 1]
+        ks = [3, 3, 3, 3, 3, 3]
+        ps = [1, 1, 1, 1, 1, 1]
+        ss = [1, 1, 1, 1, 1, 1]
         #nm = [64, 128, 256, 256, 512, 512, 512]
-        nm = [64, 128, 256, 256, 256, 128, 64]
+        nm = [64, 128, 256, 256, 256, 128]
         cnn = nn.Sequential()
 
         def convRelu(i, batchNormalization=False):
@@ -22,23 +22,20 @@ class ConvNet(nn.Module):
 
             cnn.add_module('relu{0}'.format(i), nn.ReLU(True))
 
-        convRelu(0) # 1x48x16 > 64x48x16
+        convRelu(0) # 64x50x50
         cnn.add_module('pooling{0}'.format(0), nn.MaxPool2d(2, 2))
-        # 64x48x16 > 64x24x8
-        convRelu(1) # 64x24x8 > 128x24x8
+        # 64x25x25
+        convRelu(1) # 128x25x25
         cnn.add_module('pooling{0}'.format(1), nn.MaxPool2d(2, 2))
-        # 128x12x4
-        convRelu(2, True) # 256x12x4
-        convRelu(3) # 256x12x4
-        # Cx12x4
+        # 128x12x12
+        convRelu(2, True) # 256x12x12
+        convRelu(3) # 256x12x12
 
         cnn.add_module('pooling{0}'.format(2),
-                       nn.MaxPool2d((2, 2), (2, 2)))
+                       nn.MaxPool2d((2, 2), (2, 2))) # 256x6x6
 
-        convRelu(4, True)
-        convRelu(5)
-        cnn.add_module('pooling{0}'.format(2),
-                       nn.MaxPool2d((2, 2), (2, 2)))
+        convRelu(4, True) # 256x6x6
+        convRelu(5) # 128x6x6
 
         self.cnn = cnn
         self.linear = nn.Linear(4608, 512)

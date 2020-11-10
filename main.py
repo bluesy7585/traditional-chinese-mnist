@@ -44,8 +44,7 @@ def main(char_set, weight, train_epoch):
 
     #print(f'model.training: {model.training}')
 
-    #optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-    optimizer = optim.SGD(model.parameters(), lr=0.003, momentum=0.9)
+    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
     criterion = torch.nn.CrossEntropyLoss()
     #lr_scheduler = ReduceLROnPlateau(optimizer, factor=0.1, patience=4)
 
@@ -150,7 +149,7 @@ def test(char_set, weight):
             #     print('batch: {}, val loss: {:.6f}'.format(\
             #         step + 1, aver_loss))
         acc = correct_cnt * 1.0 / total_cnt
-        print('test acc: {:.3f} {}-{}'.format(acc, correct_cnt, total_cnt))
+        print('test acc: {:.6f} {}-{}'.format(acc, correct_cnt, total_cnt))
 
 
 if __name__ == '__main__':
