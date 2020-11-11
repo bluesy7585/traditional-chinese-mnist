@@ -99,6 +99,15 @@ def demo_main(char_set, weight, name):
     concat_im.save('demo.jpg')
 
 
+def pick_one_valid_name(names, char_set):
+    valid_names = []
+    for name in names:
+        name = name.strip()
+        if sum([c in char_set for c in name]) == len(name):
+            valid_names.append(name)
+    return random.choice(valid_names)
+
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser(description='Text Recognition demo')
@@ -109,6 +118,6 @@ if __name__ == '__main__':
     random_names_txt ='ch_names.txt'
     img_dir = 'cleaned_data'
     char_set, names = get_training_set(random_names_txt, img_dir)
-    name = random.choice(names).strip()
 
+    name = pick_one_valid_name(names, char_set)
     demo_main(char_set, args.weight, name)
